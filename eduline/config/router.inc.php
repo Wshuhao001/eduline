@@ -1,0 +1,96 @@
+<?php
+return array(
+	/**
+	 * 路由的key必须写全称. 比如: 使用'wap/Index/index', 而非'wap'.
+	 */
+	'router' => array(
+		//一级导航
+		'classroom/Index/index'		=> 	SITE_URL.'/',//首页
+		'classroom/Video/index'     =>  SITE_URL.'/course.html',//课程
+		'live/Index/index'          =>  SITE_URL.'/live.html',//直播
+		'classroom/Teacher/index'   =>  SITE_URL.'/teacher.html',//讲师
+		'wenda/Index/index'         =>  SITE_URL.'/question.html',//问答
+		'exam/Index/index'          =>  SITE_URL.'/exam.html',//考试
+		'group/Index/index'         =>  SITE_URL.'/group.html',//小组
+		'event/Index/index'         =>  SITE_URL.'/event.html',//活动
+		'classroom/Topic/index'     =>  SITE_URL.'/news.html',//资讯
+
+		//课程详情
+		'classroom/Video/view'  	=>  SITE_URL.'/course/[id].html',
+		'classroom/Video/watch'  	=>  SITE_URL.'/course/watch/[id].html',
+
+		//直播详情
+		'live/Index/view'  			=>  SITE_URL.'/live/[id].html',
+		'live/Index/watch'  		=>  SITE_URL.'/live/watch/[id].html',
+
+		//讲师详情
+		'classroom/Teacher/view'  	=>  SITE_URL.'/teacher/[id].html',
+
+		//问答详情
+		'wenda/Index/detail'  		=>  SITE_URL.'/question/[id].html',
+		'wenda/Index/index$'  		=>  SITE_URL.'/question/type/[wdtype].html',
+		'wenda/Index/classifywd'    =>  SITE_URL.'/question/[type]/[tpid]/[wdtype].html',
+		'wenda/Index/addWenda'  	=>  SITE_URL.'/question/add.html',
+
+		//考试详情
+		'exam/Index/exam'  	        =>  SITE_URL.'/exam/[id].html',
+		'exam/UserExam/exam_info'  	=>  SITE_URL.'/exam/report/[exam_id]/[paper_id].html',
+
+		//小组详情
+		'group/Topic/index'  	    =>  SITE_URL.'/group/[gid].html',
+		'group/Index/add'  	        =>  SITE_URL.'/group/add/[fid].html',
+		'group/Manage/index'  	    =>  SITE_URL.'/group/edit/[gid].html',
+		'group/Manage/membermanage' =>  SITE_URL.'/group/member/[gid].html',
+		'group/Topic/topic'  	    =>  SITE_URL.'/group/bbs/[gid]/[tid].html',
+		'group/Topic/add'  	        =>  SITE_URL.'/group/bbs/add/[gid].html',
+		'group/Topic/edit'  	    =>  SITE_URL.'/group/bbs/edit/[gid]/[tid].html',
+
+		//活动详情
+		'event/Index/index'  	    =>  SITE_URL.'/event/cid/[cid].html',
+		'event/Index/eventDetail'  	=>  SITE_URL.'/event/[id].html',
+		'event/Index/addEvent'  	=>  SITE_URL.'/event/add.html',
+
+		//资讯详情
+		'classroom/Topic/view'  	=>  SITE_URL.'/news/[id].html',
+
+		//管理中心
+		'classroom/Home/video'      => SITE_URL.'/my/video.html',
+		'classroom/Home/album'      => SITE_URL.'/my/album.html',
+		'classroom/Home/course'     => SITE_URL.'/my/reserve.html',
+		'classroom/Home/wenti'      => SITE_URL.'/my/wenti.html',
+		'classroom/Home/wenda'      => SITE_URL.'/my/wenda.html',
+		'classroom/Home/note'       => SITE_URL.'/my/note.html',
+		'classroom/Home/review'     => SITE_URL.'/my/review.html',
+		'classroom/User/recharge'   => SITE_URL.'/my/recharge.html',
+        'classroom/User/account'    => SITE_URL.'/my/account.html',
+        'classroom/User/card'       => SITE_URL.'/my/card.html',
+        'classroom/User/setInfo'    => SITE_URL.'/my/set_info.html',
+        'classroom/Home/teacher_course'=> SITE_URL.'/my/myreserve.html',
+        'classroom/User/teacherVideo'  => SITE_URL.'/my/upload.html',
+        'classroom/User/teacherDeatil' => SITE_URL.'/my/teacher_info.html',
+		//'classroom/User/facelogin' => SITE_URL.'/my/facelogin.html',
+
+
+		'public/Message/index'        => SITE_URL.'/message/index.html',
+        'public/Message/comment'      => SITE_URL.'/message/comment.html',
+        'public/Message/notify'       => SITE_URL.'/message/notify.html',
+
+        //个人首页
+		'classroom/UserShow/index'  => SITE_URL.'/user/[uid].html',
+		'classroom/UserShow/wenda'  => SITE_URL.'/user/wenda/[uid].html',
+		'classroom/UserShow/note'   => SITE_URL.'/user/note/[uid].html',
+		'classroom/UserShow/fans'   => SITE_URL.'/user/fans/[uid].html',
+
+		//app下载
+		'home/Index/appdownload'    => SITE_URL.'/appdownload.html',
+
+		#微信
+		'public/Passport/landed'    => SITE_URL.'/landed.html',
+		'public/Passport/smessage'  => SITE_URL.'/smessage.html',
+
+		//支付回调地址
+
+
+
+	)
+);

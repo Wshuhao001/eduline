@@ -1,0 +1,143 @@
+<include file="__THEME__/admin_header" />
+
+<style type="text/css">
+    .ico_top, .ico_btm {
+        background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+        height: 14px;
+        width: 12px;
+    }
+    .ico_top, .ico_btm {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .ico_top {
+        background-position: -12px 0;
+    }
+    .ico_btm {
+        background-position: -24px 0;
+    }
+    .ico_top:hover {
+        background-position: 0 0;
+    }
+    .ico_btm:hover {
+        background-position: -35px 0;
+    }
+</style>
+
+<div id="container" class="so_main">
+    <div class="page_tit">{$pageTitle} </div>
+
+    <!-- START TAB框 -->
+    <php>if(!empty($pageTab)):</php>
+    <div class="tit_tab">
+        <ul>
+            <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] = $pageTab[0]['tabHash'];</php>
+            <volist name='pageTab' id='t'>
+                <li><a href="{$t.url}&tabHash={$t.tabHash}" <php>if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+            </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <!-- END TAB框 -->
+
+    <!-- START TOOLBAR -->
+    <div class="Toolbar_inbox">
+        <a href="javascript:void(0);" class="btn_a" onclick="admin.addTreeCategory(0, '{$stable}', '{$uid}');"><span>添加课堂</span></a>
+    </div>
+    <!-- END TOOLBAR -->
+
+    <!-- START LIST -->
+    <div class="list">
+        <ul class="sort">
+            <li class="title">
+                <div class="line-l c1" style="padding-right:0.5%;">订单ID</div>
+                <!--<div class="line-l c1" style="padding-right:1.3%;">用户名</div>-->
+                <div class="line-l c1" style="padding-left:30%;">课堂名称</div>
+                <div class="line-l c2">操作</div>
+            </li>
+        </ul>
+
+        <php>if(empty($learn)):</php>
+        <span class="textC" style="line-height:26px;display:block">{:L('PUBLIC_NO_RELATE_DATA')}!</span>
+        <php>endif;</php>
+
+        <volist name="learn" id="res">
+            <ul class="sort">
+                <li class="ltitle">
+                    <div class="line-l c1">{$res.id}</div>
+                    <div class="line-l c1" style="padding-left:16%;">{$res.video_title}</div>
+                    <div class="line-l c2">
+                        <a href="javascript:void(0);"onclick="admin.delLearn('{$res.id}','delLearn');">删除</a>
+                    </div>
+                </li>
+            </ul>
+        </volist>
+    </div>
+    <!-- END LIST -->
+
+    <!-- START BOTTOMBAR -->
+    <div class="Toolbar_inbox">
+        <a href="javascript:void(0);" class="btn_a" onclick="admin.addTreeCategory(0, '{$stable}', '{$uid}');"><span>添加课堂</span></a>
+    </div>
+    <!-- END BOTTOMBAR -->
+</div>
+
+<script type="text/javascript">
+    /**
+     * 收起与展开效果
+     * @param integer cid 章节ID
+     * @return boolean false
+     */
+    admin.foldCategory = function(cid)
+    {
+        var offImg = THEME_URL + '/admin/image/off.png';
+        var onImg = THEME_URL + '/admin/image/on.png';
+        $('#sub_'+cid).toggle();
+        $img = $('#img_'+cid);
+        if($img.attr('src') == offImg) {
+            $img.attr('src', onImg);
+        } else {
+            $img.attr('src', offImg);
+        }
+        return false;
+    };
+
+    /**
+     * 添加课堂
+     * @parma integer
+     * @param string stable 所操作的数据表
+     * @parma integer
+     * @param integer
+     * @return boolean false
+     */
+    admin.addTreeCategory = function(id, stable, uid)
+    {
+        if(typeof id === "undefined" || typeof stable === "undefined") {
+            return false;
+        }
+        ui.box.load(U('classroom/AdminLearnc/addclasslearn')+'&id='+id+'&stable='+stable+'&uid='+uid, "添加课堂");
+        return false;
+    };
+
+
+    /**
+     * 删除课堂（云课堂用户-课堂管理）
+     * @param id
+     * @param action
+     */
+    admin.delLearn=function(_id,action){
+        var id = ("undefined"== typeof(_id)|| _id=='') ? admin.getChecked() : _id;
+        if(id==''){
+            ui.error("课堂id不能为null");
+            return false;
+        }
+        if(!confirm("是否确认删除此课堂？")){
+            return false;
+        }
+        $.post(U('classroom/AdminLearnc/'+action),{ids:id},function(msg){
+            admin.ajaxReload(msg);
+        },'json');
+    }
+</script>
+
+<include file="__THEME__/admin_footer" />

@@ -1,0 +1,30 @@
+<include file="../Public/_header" />
+
+<!--content start-->
+<div class="body">
+    <div class="question-box">
+        <h2>{$data.title}</h2>
+        <dl>
+            <dt>&nbsp;&nbsp;{$data.uname}&nbsp;&nbsp;发表于：{$data.dateline|friendlyDate=###}&nbsp;&nbsp;浏览量: {$data.readcount}</dt>
+        </dl>
+        <div class="question-page">
+            <h2>摘要：</h2>　　{$data.desc}
+        </div>
+        <div class="question-page"><br>
+            <h2>详情：</h2>{$data.text}
+        </div>
+        <div class="page-question">
+            <div><a href="{:U('w3g/News/view',array('id'=>$up['id']))}">上一篇：{$up.title|msubstr=0,7,'utf-8',true}</a></div>
+            <div><a href="{:U('w3g/News/view',array('id'=>$down['id']))}">下一篇：{$down.title|msubstr=0,7,'utf-8',true}</a></div>
+        </div>
+        <!--
+        <form>
+            <div class="item border"><textarea name="" cols="" rows="" placeholder="说说自己的看法..."></textarea></div>
+            <div class="item t-right">可以输入140个字<button type="submit">提交回答</button></div>
+        </form>
+        -->
+    </div>
+    
+</div>
+<!--footer-->
+<include file="../Public/_footer" />

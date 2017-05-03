@@ -1,0 +1,75 @@
+<include file="../Public/_header" />
+
+<!--content start-->
+<div class="body">
+    
+    <ul class="newsnav">
+        <li><a href="{:U('w3g/News/index')}" <if condition="$_GET['cate'] eq ''">style="color: #0477c0;"</if> >全部资讯</a></li>
+        <volist name="cate" id="vo">
+            <li><a href="{:U('w3g/News/index',['cate'=>$vo['zy_topic_category_id']])}" <if condition="$_GET['cate'] eq $vo['zy_topic_category_id']">style="color: #0477c0;"</if> >{$vo.title}</a></li>
+        </volist>
+    </ul>
+    <div class="searchdiv"><if condition="$cate_name_one">在“<span>{$cate_name_one}</span>”分类下，</if>找到{$topic_data.count}条资讯</div>
+    <ul class="newslist more_newslist">
+        <volist name="topic_data.data" id="vo">
+            <li>
+                <img src="{:cut_img($vo['image'],150,90)}" />
+                <h3><a href="{:U('w3g/News/view',array('id'=>$vo['id']))}">{$vo.title|getShort=###,'21'}</a></h3>
+                <p>{$vo.desc|getShort=###,'85','...'}</p>
+                <div class="info"><span>{$vo.readcount}阅读</span>{$vo.dateline|friendlyDate}</div>
+            </li>
+        </volist>
+    </ul>
+</div>
+<div class="loadding">
+    <if condition="$topic_data['nowPage'] eq $wendaList['totalPages']">
+        <div>ᐠ(￣▽￣)ᐟ我可是有底线的</div><else/>正在加载更多~~
+    </if></div></div>
+<a class="backtop"></a>
+
+<script>
+    var p = 1;
+    $(window).scroll(function () {
+        //已经滚动到上面的页面高度
+        var scrollTop = $(this).scrollTop();
+        //页面高度
+        var scrollHeight = $(document).height();
+        //浏览器窗口高度
+        var windowHeight = $(this).height();
+        //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+        if (scrollTop + windowHeight == scrollHeight) {
+            if(!p || p >= "{$topic_data['totalPages']}"){
+                return false;
+            }else{
+                p = p + 1;
+                ajaxBang();
+            }
+        }
+    });
+
+    //请求事件
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('w3g/News/getTopicList')}",
+            data:"p="+p+"&cate={$_GET['cate']}",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+    //追加html
+    function appendHtml(data){
+        $(".more_newslist").append(data.data);
+        if(!p || p >= data.totalPages){
+            $('.loadding').html('<div>ᐠ(￣▽￣)ᐟ我可是有底线的</div>')
+            return false;
+        }else{
+            p = data.nowPage+1;//下一页
+        }
+    }
+
+</script>
+<!--footer-->
+<include file="../Public/_footer" />

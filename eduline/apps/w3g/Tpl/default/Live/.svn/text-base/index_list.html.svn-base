@@ -1,0 +1,20 @@
+<script>
+    var p="{$p}";//定义页码
+    var cateId="{$cateId}";//定义分类
+    var tagId="{$tagId}";//定义标签
+</script>
+<php>if($listData){</php>
+<volist name="listData" id="vo">
+	<li>
+            <a href="{:U('w3g/Live/view',array('id'=>$vo['id']))}"><img src="{:cut_img($vo['cover'],266,170)}"></a>
+            <div class="info">
+                <div class="tit"><a href="{:U('w3g/Live/view',array('id'=>$vo['id']))}">{:limitNumber($vo['title'],12)}</a></div>
+                <div class="con">
+                    <div class="price"><if condition="$vo['price'] eq 0">免费<else/>{$vo.price}学币</if></div>
+                </div>
+            </div>
+        </li>
+</volist>
+<php>}else{</php>
+	<span>暂无此分类直播~</span>
+<php>}</php>

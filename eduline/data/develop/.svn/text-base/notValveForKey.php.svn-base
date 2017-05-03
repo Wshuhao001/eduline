@@ -1,0 +1,6 @@
+<?php
+return array (
+  'PUBLIC_GET_USERINFO_FAIL' => '?app=classroom&mod=User&act=facelogin',
+  'PUBLIC_REMOTE_APP' => '?app=classroom&mod=User&act=facelogin',
+);
+?>

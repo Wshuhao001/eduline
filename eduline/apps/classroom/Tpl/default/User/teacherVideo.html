@@ -1,0 +1,53 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+          <a href="javascript:;" class="onactive" onclick="navClick(this,'getTeacherVideo')">我的线上课程</a>
+          <a href="javascript:;" onclick="navClick(this,'getTeacherFace')">我的线下课程</a>
+        </div>
+
+
+        <!--录播课程列表-->
+        <ul class="user-imglist" id="getTeacherVideo"><a href="/?app=admin" target="_blank"><span>点击管理我的线上课程</span></a></ul>
+        <!--面授课程列表-->
+        <ul class="uploadvideo" id="getTeacherFace" style="display:none;"></ul>
+      </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+<script>
+
+    //头部点击事件
+    function navClick(cate,type){
+        
+        btnclick=type;
+        magstatus=false;
+        if(type == 'getTeacherVideo'){
+            $('#'+type).css('display','block');
+            $('#getTeacherFace').css('display','none');
+
+        }else if(type == 'getTeacherFace'){
+            $('#getTeacherFace').html('');
+            $('#'+type).css('display','block');
+            $('#getTeacherVideo').css('display','none');
+            var url = "{:U('classroom/User/getTeacherFace')}";
+            $.ajax({
+                type: "POST",
+                url:url,
+                data:"p=1",
+                dataType:"json",
+                success:function(data){
+                    $("#getTeacherFace").append(data.data);
+                }
+            });
+        }
+        $(cate).addClass("onactive").siblings('a').removeClass("onactive");
+    }
+
+    
+ </script>
+<include file="__THEME__/public_footer" />

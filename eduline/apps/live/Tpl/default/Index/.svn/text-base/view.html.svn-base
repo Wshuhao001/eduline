@@ -1,0 +1,200 @@
+<include file="__THEME__/public_header" />
+<div class="mask"></div>
+<!--content start-->
+<div class="page-palce">
+	<div class="wrap"><a href="/">首页</a><span>&gt;</span><a href="{:U('live/Index/index')}">直播</a><span>&gt;</span><span>{$data.title}</span></div>
+</div>
+<div class="page-top">
+	<div class="wrap">
+    	<div class="page-top-wrap">
+            <div class="pic"><a href="{:U('live/Index/watch',array('id'=>$id))}" ><img src="{:getCover($data['cover'] ,520 , 320 )}" class="lazyloading"></a></div>
+            <div class="tit">
+            	<a class="a f3" href="{:U('live/Index/watch',array('id'=>$id))}" >{$data.title}</a>
+      		</div>
+            <div class="dis">{$data.info}</div>
+            <div class="info">
+            	<div class="num">报名人数：{$data.order_count}</div>
+            	<div class="star">
+            	<if condition="$data.score  GT 0 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.score  GT 1 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.score  GT 2 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.score  GT 3 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.score  GT 4 "> <span></span>
+	             <else /><span class="no"></span></if>
+            	</div>
+            </div>
+            <div class="price">￥{$data['price']}</div>
+            <div class="ebtn">
+            	<php>if($data['is_buy']){</php>
+            		<a class="bm" href="{:U('live/Index/watch',array('id'=>$id))}">已报名</a>
+            	<php>}else{</php>
+            		<a class="bm" id="charge" href="javascript:void(0);">立即报名</a>
+            	<php>}</php>
+
+				
+	            <a class="ks" id="go_live" href="{:U('live/Index/watch',array('id'=>$id))}" ><php>if($data['endTime'] >= time() ) {echo '进入直播';}else{echo '直播结束';}</php></a>
+			</div>
+        </div>
+    </div>
+</div>
+
+<!--content start-->
+<div class="content bgb pt30">
+	<div class="wrap">
+        <div class="content-con">
+        	<div class="content-main">
+            	<div class="page-title">
+                	<ul class="page-title-ul">
+                		<li class="on"><a href="javascript:;" onclick="switchnav(this,'live_dir')">目录</a></li>
+                        <li><a href="javascript:;" onclick="switchnav(this,'live_info')">详情</a></li>
+                    </ul>
+                </div>
+                <!-- 目录 -->
+                <div class="class-conent" id="live_dir">
+                	<dl class="class-list" id="dirLive"></dl>
+                </div>
+                <!-- 提问 -->
+                <div class="page-conent" id="live_info">
+                	<p>{$data.info}</p>
+                </div>
+
+            </div>
+            <div class="content-sider w340">
+                <div class="sider-tit">讲师信息</div>
+                <php>if(!empty($data['teacher'])){</php>
+	                <dl class="sider-originator auto">
+	                	<dt>
+	                    	<div class="pic"><a href="{:U('classroom/Teacher/view',array('id'=>$data['teacher']['id']))}"><img src="{:getAttachUrlByAttachId($data['teacher']['head_id'])}" class="lazyloading"></a></div>
+	                    	<h3><a href="{:U('classroom/Teacher/view',array('id'=>$data['teacher']['id']))}">{$data.teacher.name}</a><em>{$data.teacher.title}</em></h3>
+	                    </dt>
+	                    <dd>
+	                    	<div class="txt">{$data.teacher.inro}</div>
+	                    </dd>
+	                </dl>
+   				<php>}</php>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 购买确认弹出框 -->
+<div class="buyOperating">
+	<div class="w-close"><a class="mr15 mt5">×</a></div>
+	<div class="w-notice">
+    	<h4>提示：该课程需要支付<em class="coin_num_l">{$data['price']}</em>学币，您当前账户余额为<em class="coin_num_l">{$data['balance']['balance']}</em>学币。是否继续？</h4>
+	</div>
+    <div class="agreement">
+    	<a><span id="protocol" class="agree"></span>我已经阅读并同意</a>
+        <a>《收费课程服务协议》</a>
+    </div>
+	<div class="buy-btn">
+        <a class="btn"  onclick="buyOperat({$_GET['id']},'live');">确认支付</a>
+        <a class="btn" href="{:U('classroom/User/recharge')}">充值</a>
+        <a class="btn cancel">暂不支付</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+var uid = '{$uid}';
+var lid = '{$id}';
+$(function(){
+    $.post("{:U('live/Index/getcatalog')}",{id:lid},function(txt){
+        var txt = eval('('+txt+')');
+        $('#dirLive').append(txt);
+    })
+})
+$(function(){
+	//点击购买
+	$('#charge').live('click',function(){
+		if(uid<=0){
+			reg_login();
+			return false;
+		}
+		$('.buyOperating').show();
+		var mask_height = $(document).height();
+		$('.mask').height(mask_height).show();
+	});
+	//同意协议
+	$('.agreement #protocol').click(function(){
+		var type = $(this).attr('class');
+		if(type == 'no-agree'){
+			$(this).attr('class','agree');
+		}else{
+			$(this).attr('class','no-agree');	
+		}
+	});
+	//暂不支付
+	$('.w-close a,.buy-btn .cancel').click(function(){
+		$('.buyOperating,.mask').hide();
+	});
+	
+	//进入直播
+	$('#go_live').click(function(){
+		if(uid <= 0){
+			reg_login();
+			return false;
+		}
+		
+	});
+
+  	//显示更多
+    $('.qa-reply-more .loadMore').live('click',function(){
+          var id = $(this).attr('more_id');
+          var moreType = $(this).attr('type');
+          var page = $(this).attr('page');
+          eval('var moreTypes='+moreType+'_type');  //分类类型 1:提问,2:点评,3:笔记
+          eval('var limit='+moreType+'_limit');  //查询条数
+          $.post("{:U('widget/Resource/getListForId')}",{id:id,type:moreTypes,limit:limit,p:page},function(txt){
+              showComment(txt.data,moreType,id,txt.nowPage,txt.count);
+          },'json');
+     });
+});//控制回答别人回复下面的textarea 提交按钮
+
+
+	
+//购买操作
+var buyOperat = function(id,type){
+	if(!id || !type){
+		return;
+	}
+	if($(".agree").size() < 1){
+		notes("购买套餐必须同意《收费课程服务协议》",'failure');
+		return;
+	}
+	$.post(U('live/Index/buyOperating'),{id:id},function(txt){
+		console.log(txt);
+		if(txt.status == '0'){
+			$(".buyOperating").hide();
+			$(".mask").hide();
+			$("#charge").attr('id','');
+			notes(txt.info,'failure');
+		} else {
+			$(".buyOperating").hide();
+			$("#charge").attr('id','');
+			$(".mask").hide();
+			notes(txt.info,'success');
+			window.location.href = window.location.href;
+		}
+	},'json');
+}
+
+function switchnav(obj , id){
+	$('li').removeClass('on');
+	$(obj).parent().addClass('on');
+	if( id == 'live_dir') {
+		$('#live_dir').css('display','block');
+		$('#live_info').css('display','none');
+	}
+	if( id == 'live_info') {
+		$('#live_info').css('display','block');
+		$('#live_dir').css('display','none');
+	}
+}
+  
+</script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

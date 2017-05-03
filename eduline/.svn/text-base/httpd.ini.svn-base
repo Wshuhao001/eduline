@@ -1,0 +1,98 @@
+﻿#
+# httpd.ini
+# eduline
+# 
+
+[ISAPI_Rewrite]
+
+# 3600 = 1 Hour
+CacheClockRate 3600
+
+RepeatLimit 32
+
+
+#一级导航
+RewriteRule ^(.*)/?$                                                              $1\/index\.php\?app=classroom&mod=Index&act=index&$2 [L]
+RewriteRule ^(.*)/?course\.html$                                              	  $1\/index\.php\?app=classroom&mod=Video&act=index&$2 [L]
+RewriteRule ^(.*)/?live\.html$                                              	  $1\/index\.php\?app=live&mod=Index&act=index&$2 [L]
+RewriteRule ^(.*)/?teacher\.html$                                              	  $1\/index\.php\?app=classroom&mod=Teacher&act=index&$2 [L]
+RewriteRule ^(.*)/?question\.html$                                                $1\/index\.php\?app=wenda&mod=Index&act=index&$2 [L]
+RewriteRule ^(.*)/?exam\.html$                                              	  $1\/index\.php\?app=exam&mod=Index&act=index&$2 [L]
+RewriteRule ^(.*)/?group\.html$                                              	  $1\/index\.php\?app=group&mod=Index&act=index&$2 [L]
+RewriteRule ^(.*)/?event\.html$                                              	  $1\/index\.php\?app=event&mod=Index&act=index&$2 [L]
+RewriteRule ^(.*)/?news\.html$                                              	  $1\/index\.php\?app=classroom&mod=Topic&act=index&$2 [L]
+
+#课程详情
+RewriteRule ^(.*)/?course/([0-9]+)\.html$                                         $1\/index\.php\?app=classroom&mod=Video&act=view&id=$2&$3 [L]
+RewriteRule ^(.*)/?course/watch/([0-9]+)\.html$                                   $1\/index\.php\?app=classroom&mod=Video&act=watch&id=$2&$3 [L]
+
+#直播详情
+RewriteRule ^(.*)/?live/([0-9]+)\.html$                                           $1\/index\.php\?app=live&mod=Index&act=view&id=$2&$3 [L]
+RewriteRule ^(.*)/?live/watch/([0-9]+)\.html$                                     $1\/index\.php\?app=live&mod=Index&act=watch&id=$2&$3 [L]
+
+#讲师详情
+RewriteRule ^(.*)/?teacher/([0-9]+)\.html$                                        $1\/index\.php\?app=classroom&mod=Teacher&act=view&id=$2&$2 [L]
+
+#问答详情
+RewriteRule ^(.*)/?question/([0-9]+)\.html$                                       $1\/index\.php\?app=wenda&mod=Index&act=detail&id=$2&$3 [L]
+RewriteRule ^(.*)/?question/type/([0-9]+)\.html$                                  $1\/index\.php\?app=wenda&mod=Index&act=index&wdtype=$2&$23 [L]
+RewriteRule ^(.*)/?question/([0-9]+)/([0-9]+)/([0-9]+)\.html$                     $1\/index\.php\?app=wenda&mod=Index&act=classifywd&type=$2&tpid=$3&wdtype=$4&$5 [L]
+RewriteRule ^(.*)/?question/add\.html$                                            $1\/index\.php\?app=wenda&mod=Index&act=addWenda&$2 [L]
+
+#考试详情
+RewriteRule ^(.*)/?exam/([0-9]+)\.html$                                        	  $1\/index\.php\?app=exam&mod=Index&act=exam&id=$2&$3 [L]
+RewriteRule ^(.*)/?exam/report/([0-9]+)/([0-9]+)\.html$                           $1\/index\.php\?app=exam&mod=UserExam&act=exam_info&exam_id=$2&paper_id=$3&$4 [L]
+
+#小组详情
+RewriteRule ^(.*)/?group/([0-9]+)\.html$                                          $1\/index\.php\?app=group&mod=Topic&act=index&gid=$2&$3 [L]
+RewriteRule ^(.*)/?group/add/([0-9]+)\.html$                                      $1\/index\.php\?app=group&mod=Index&act=add&fid=$2&$3 [L]
+RewriteRule ^(.*)/?group/edit/([0-9]+)\.html$                                     $1\/index\.php\?app=group&mod=Manage&act=index&gid=$2&$3 [L]
+RewriteRule ^(.*)/?group/member/([0-9]+)\.html$                                   $1\/index\.php\?app=group&mod=Manage&act=membermanage&gid=$2&$3 [L]
+RewriteRule ^(.*)/?group/bbs/([0-9]+)/([0-9]+)\.html$                             $1\/index\.php\?app=group&mod=Topic&act=topic&gid=$2&tid=$3&$4 [L]
+RewriteRule ^(.*)/?group/bbs/add/([0-9]+)\.html$                                  $1\/index\.php\?app=group&mod=Topic&act=add&gid=$2&$3 [L]
+RewriteRule ^(.*)/?group/bbs/edit/([0-9]+)/([0-9]+)\.html$                        $1\/index\.php\?app=group&mod=Topic&act=edit&gid=$2&tid=$3&$4 [L]
+
+#活动详情
+RewriteRule ^(.*)/?event/cid/([0-9]+)\.html$                                      $1\/index\.php\?app=event&mod=Index&act=index&cid=$2&$3 [L]
+RewriteRule ^(.*)/?event/([0-9]+)\.html$                                          $1\/index\.php\?app=event&mod=Index&act=eventDetail&id=$2&$3 [L]
+RewriteRule ^(.*)/?event/add\.html$                          					  $1\/index\.php\?app=event&mod=Index&act=addEvent&$2 [L]
+
+#资讯详情
+RewriteRule ^(.*)/?news/([0-9]+)\.html$                                           $1\/index\.php\?app=classroom&mod=Topic&act=view&id=$2&$3 [L]
+
+#管理中心
+RewriteRule ^(.*)/?my/video\.html$                                                $1\/index\.php\?app=classroom&mod=Home&act=video&$2 [L]
+RewriteRule ^(.*)/?my/album\.html$                                                $1\/index\.php\?app=classroom&mod=Home&act=album&$2 [L]
+RewriteRule ^(.*)/?my/reserve\.html$                                              $1\/index\.php\?app=classroom&mod=Home&act=course&$2 [L]
+RewriteRule ^(.*)/?my/wenti\.html$                                                $1\/index\.php\?app=classroom&mod=Home&act=wenti&$2 [L]
+RewriteRule ^(.*)/?my/wenda\.html$                                                $1\/index\.php\?app=classroom&mod=Home&act=wenda&$2 [L]
+RewriteRule ^(.*)/?my/note\.html$                                                 $1\/index\.php\?app=classroom&mod=Home&act=note&$2 [L]
+RewriteRule ^(.*)/?my/review\.html$                                               $1\/index\.php\?app=classroom&mod=Home&act=review&$2 [L]
+RewriteRule ^(.*)/?my/recharge\.html$                                             $1\/index\.php\?app=classroom&mod=User&act=recharge&$2 [L]
+RewriteRule ^(.*)/?my/account\.html$                                              $1\/index\.php\?app=classroom&mod=User&act=account&$2 [L]
+RewriteRule ^(.*)/?my/card\.html$                                                 $1\/index\.php\?app=classroom&mod=User&act=card&$2 [L]
+RewriteRule ^(.*)/?my/set_info\.html$                                             $1\/index\.php\?app=classroom&mod=User&act=setInfo&$2 [L]
+RewriteRule ^(.*)/?my/myreserve\.html$                                            $1\/index.php\?app=classroom&mod=Home&act=teacher_course&$2 [L]
+RewriteRule ^(.*)/?my/upload\.html$                                               $1\/index.php\?app=classroom&mod=User&act=teacherVideo&$2 [L]
+RewriteRule ^(.*)/?my/teacher_info\.html$                                         $1\/index.php\?app=classroom&mod=User&act=teacherDeatil&$2 [L]
+
+#消息
+RewriteRule ^(.*)/?message/index.html$                                            $1\/index.php?app=public&mod=Message&act=index&$2 [L]
+RewriteRule ^(.*)/?message/comment.html$                                          $1\/index.php?app=public&mod=Message&act=comment&$2 [L]
+RewriteRule ^(.*)/?message/notify.html$                                           $1\/index.php?app=public&mod=Message&act=notify&$2 [L]
+
+#个人首页
+RewriteRule ^(.*)/?user/([0-9]+)\.html$                                       	  $1\/index\.php\?app=classroom&mod=UserShow&act=index&uid=$2&$3 [L]
+RewriteRule ^(.*)/?user/wenda/([0-9]+)\.html$                                     $1\/index\.php\?app=classroom&mod=UserShow&act=wenda&uid=$2&$3 [L]
+RewriteRule ^(.*)/?user/note/([0-9]+)\.html$                                      $1\/index\.php\?app=classroom&mod=UserShow&act=note&uid=$2&$3 [L]
+RewriteRule ^(.*)/?user/fans/([0-9]+)\.html$                                      $1\/index\.php\?app=classroom&mod=UserShow&act=fans&uid=$2&$3 [L]
+
+#app下载
+RewriteRule ^(.*)/?appdownload$                                                   $1\/index\.php\?app=home&mod=Index&act=appDownload&$2 [L]
+
+#微信
+RewriteRule ^(.*)/?landed$                                                        $1\/index\.php\?app=public&mod=Passport&act=landed&$2 [L]
+RewriteRule ^(.*)/?smessage$                                                      $1\/index\.php\?app=public&mod=Passport&act=smessage&$2 [L]
+
+#支付回调地址
+RewriteRule ^(.*)/?classroom/Pay/(\w+)                                            $1\/index\.php\?app=classroom&mod=Pay&act=$2 [L]

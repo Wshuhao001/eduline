@@ -1,0 +1,77 @@
+<include file="__THEME__/public_header" />
+
+<script>
+var REPOHNE_VAR="{:U('home/Repwd/getVrifi')}";
+var REPWDHANDLE="{:U('home/Repwd/repwdhandle')}";
+var REPWDEMAIL="{:U('public/Passport/doFindPasswordByEmail')}";
+var OKEMAILADD="{:U('public/Passport/okemailadd')}";
+//更换验证码
+function changeverifys(){
+	var date = new Date();
+    var ttime = date.getTime();
+    var url = "__ROOT__/public/captcha.php";
+    $('#verifyimgs').attr('src',url+'?'+ttime);
+    
+};
+
+</script>
+<!--main-->
+<div class="worap-login back">
+  <div class="title"><span class="onactive">找回密码</span></div>
+  <div class="login-Cipher" >
+    <div class="teb"><a href="javascript:;" onclick="repPhone(this)" class="f3">手机验证</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;" onclick="repEmail(this)">邮箱验证</a></div>
+    <div id="repEmail" style="display: none;" class="login-Cipher">
+    <ul class="login-Cipher-ul" >
+      <li>
+        <label>用户邮箱: </label>
+        <input class="regsiter-width" id="repemail" maxlength="30" type="text" placeholder="请输入注册时用的邮箱">
+        <p class="p" id="repmsgemail"></p>
+      </li>
+      <li>
+        <label>验&nbsp;证&nbsp;码:</label>
+        <input  type="text" id="repcode" maxlength="6" class="regsiter-width"  placeholder="请输入右侧验证码"  />
+        <div class="yam"><img class="width108" id="verifyimgs" onclick="changeverifys()" title="点击刷新" src="__ROOT__/public/captcha.php"></a></div>
+        <p class="p" id="repmsgcode"></p>
+      </li>
+      
+    </ul>
+    <input name="" class="regsiter-xy-submit" onclick="repEmailNext(this)" value="下 一 步"/>
+    </div>
+    <!--手机验证验证 -->
+    
+     <div id="repPhone">
+     
+    	<ul class="login-Cipher-ul">
+      
+             
+            <li>
+              <label class="label">手机号码:</label>
+              <input class="regsiter-width" type="text" maxlength="11" id="rephoneval" placeholder="请输入注册时填写的手机号">
+              <p class="p" id="tsrephone"></p>
+            </li>
+             <li>
+              <label class="label">验&nbsp;证&nbsp;码::</label>
+              <input class="width130 regsiter-width" type="text" id="repverval" maxlength="6"   placeholder="请输入收到的验证码">
+              <a class="width80" href="javascript:;" onclick="getRepPhoneVerify()">获取验证码</a><span class="width97"  style="display:none" ><a id="dctime"></a>重新发送</span> 
+              <p class="p" id="tsrephonever"></p> </li>
+            <li>
+              <label class="label">新&nbsp;密&nbsp;码:</label>
+              <input class="regsiter-width" id="ppwd" maxlength="30"  type="password" placeholder="请输入新密码，6-20个字符">
+              <p class="p" id="tsrephonepwd"></p>
+            </li>
+            <li>
+              <label class="label">确认密码:</label>
+              <input class="regsiter-width" id="ppwds" type="password" maxlength="30" placeholder="重复密码">
+              <p class="p" id="tsrephonepwds" ></p>
+            </li>
+    	</ul>
+    	
+    <input name="" onclick="okPhonepwd(this)" class="regsiter-xy-submit"  type="button" value="确定"/>
+    </div>
+    
+    
+    </div>  
+   
+  </div>
+<include file="__THEME__/public_footer" />

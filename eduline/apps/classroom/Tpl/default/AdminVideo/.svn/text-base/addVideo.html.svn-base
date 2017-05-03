@@ -1,0 +1,294 @@
+<include file="__THEME__/admin_header" />
+<include file="__THEME__/swfupload" />
+	<div id="container" class="so_main">
+    <div class="page_tit">{$pageTitle}</div>
+    <php>if(!empty($pageTab)):</php>
+    
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('classroom/AdminVideo/doAddVideo')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+    	<input type="hidden" name="systemdata_list" value="video_Admin" class="s-txt">
+    	<input type="hidden" name="systemdata_key" value="addVideo" class="s-txt">
+    	<input type="hidden" name="pageTitle" value="添加课程" class="s-txt">
+    	<input type="hidden" name="id" value="{$id}" />
+    	<div class="form2">
+    		<dl class="lineD" id="dl_video_title">
+		      	<dt><font color="red"> * </font>课程标题：</dt> 
+		      	<dd>
+		      		<input name="video_title" id="form_video_title" type="text" value="{$video_title}" class="s-txt">
+		      		<php>if($_GET['id']){</php> 
+		      		<a href="{:U('classroom/Album/watch',array('aid'=>$id,'type'=>1))}" target="_blank">查看视频</a> 
+		      		<if condition="$qiniu_key">| 
+		      		<a href="javascript:void(0);" onclick="deletevideo('{$qiniu_key}');">删除视频</a></if>
+		      		<php>}</php> 
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD">
+		    	<dt><font color="red"> * </font>课程分类：</dt>
+		    	<dd>
+		    		<php>$fullcategorypaths = trim($fullcategorypath , ',');</php>
+		    		{:W('CategoryLevel',array('table'=>'zy_video_category','id'=>'video_level','default'=>$fullcategorypaths ))}
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD" id="dl_video">
+		    	<dt><font color="red"> * </font>课程简介：</dt>
+		    	<dd>
+		    		<textarea name="video_intro" id="form_video_intro" rows="10" cols="80">{$video_intro}</textarea>
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD" id="form_v_price">
+		    	<dt>价格：</dt>
+		    	<dd>
+		    		<input name="v_price" type="text" value="{$v_price}" class="s-txt">
+		    	</dd>
+		    </dl>
+
+		    <dl class="lineD" id="form_v_price">
+		    	<dt>会员等级：</dt>
+		    	<dd>
+		    		<select name="vip_levels" class="s-select" style="width:200px;">
+		    			<option value="0">无</option>
+		    			<volist name="vip_levels" id="vo">
+		    				<option value="{$key}" <php>if($vip_level == $key){</php>selected="selected"<php>}</php> >{$vo}</option>
+		    			</volist>
+					</select>  此vip以上级别（含）免费
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD">
+                <dt><font color="red"> * </font>封面上传：</dt>
+                <dd id="image_cover">
+                    {:W('Upload',array('callback'=>'callback','uploadType'=>'image','limit'=>1,'inputname'=>'cover','urlquery'=>'input_id=cover'))}建议尺寸：520*320
+                    <php>if($cover_path){</php>
+                    <div id="small_cover">
+                        <img style="max-width:100px;padding:2px; border:1px solid #ccc" src="{$cover_path}" />
+                        <input type="hidden" name="cover_ids" data="cover_ids" value="{$cover}" />
+                    </div>
+                    <php>}</php>
+                </dd>
+            </dl>
+		    
+		    <dl class="lineD">
+		    	<dt>课件上传：</dt>
+		    	<dd>
+		    		{:W('UploadAttach',array('limit'=>'1','inputname'=>'videofile','allow_exts'=>'zip,rar'))}多个文件请打包上传
+		    		<php>if($videofile_ids){</php>
+		    			<input type="hidden" name="attach[]" id="old_coursefile_ids" value="{$videofile_ids}" />
+		    		<php>}</php>
+		    	</dd>
+		    </dl>
+		    <!--
+		    <dl class="lineD" id="form_tag">
+				<dt>课程标签：</dt>
+		    	<dd>
+					<input type="text" name="video_tag" id="form_video_tag" value="{$str_tag}" class="s-txt"  />
+					<p>多个标签请以半角&lt;,&gt;逗号分割</p>
+				</dd>
+			</dl>
+			-->
+
+		    <dl class="lineD" id="form_teacherlist">
+		    	<dt><font color="red"> * </font>讲师选择：</dt>
+		    	<dd>
+					<select name="trid">
+					  	<foreach name="trlist" item="tl">
+					  		<option value="{$tl.uid}" <php>if($teacher_id == $tl['uid']){</php>selected="selected"<php>}</php> >{$tl.name}</option>
+					  	</foreach>
+					</select>
+		    	</dd>
+		    </dl>
+			
+			<dl class="lineD" id="form_listingtime">
+		    	<dt><font color="red"> * </font>上架时间：</dt>
+		    	<dd>
+		    		<input name="listingtime" type="text" value="<php>if($listingtime){</php>{:date("Y-m-d H:i:s", $listingtime)}<php>}</php>" class="s-txt"  onfocus="core.rcalendar(this,'full');" readonly="readonly">
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD" id="form_uctime">
+		    	<dt><font color="red"> * </font>下架时间：</dt>
+		    	<dd>
+		    		<input name="uctime" type="text" value="<php>if($uctime){</php>{:date("Y-m-d H:i:s", $uctime)}<php>}</php>" class="s-txt" onfocus="core.rcalendar(this,'full');" readonly="readonly">
+		    	</dd>
+		    </dl>
+		     
+		    <dl class="lineD" id="form_listingtime">
+		    	<dt>是否参加限时打折：</dt>
+		    	<dd>
+		    		<input name="is_tlimit" id="is_tlimit" type="checkbox" value="1" <php>if($is_tlimit){</php>checked<php>}</php> >勾选参加限时打折
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD" <php>if(!$is_tlimit){</php> style="display:none"<php>}</php> id="form_limit_discount">
+		    	<dt><font color="red"> * </font>限时折扣：</dt>
+		    	<dd>
+		    		<input name="limit_discount" id="limit_discount" <php>if(!$is_tlimit){</php>readonly<php>}</php> type="text" value="{$limit_discount}" class="s-txt" style="width:100px">限时折扣(默认为原价，支持小数点后2位，请0-1之间的数字)
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD" <php>if(!$is_tlimit){</php> style="display:none"<php>}</php> id="form_starttime">
+		    	<dt><font color="red"> * </font>限时打折开始时间：</dt>
+		    	<dd>
+		    		<input name="starttime" type="text" <php>if(!$is_tlimit){</php>readonly<php>}</php> id="starttime" value="<php>if($starttime){</php>{:date("Y-m-d H:i:s", $starttime)}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly">
+		    	</dd>
+		    </dl>
+		    
+		    <dl class="lineD" <php>if(!$is_tlimit){</php> style="display:none"<php>}</php> id="form_endtime">
+		    	<dt><font color="red"> * </font>限时打折结束时间：</dt>
+		    	<dd>
+		    		<input name="endtime" type="text" <php>if(!$is_tlimit){</php>readonly<php>}</php> value="<php>if($starttime){</php>{:date("Y-m-d H:i:s", $endtime)}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly">
+		    	</dd>
+		    </dl>
+		    
+		    <!--
+		    <dl class="lineD">
+		    	<dt>是否精选：</dt>
+		    	<dd>
+		    		<input type="checkbox" id="is_best" name="is_best" <php>if($is_best){</php>checked<php>}</php> value="1">设置精选
+		    	</dd>
+		    </dl>
+		    -->
+		    
+		    <div class="page_btm">
+				<input type="submit" class="btn_b" value="保存" id="form_submit">
+    		</div>
+    	</div>
+    	
+    	
+    </form>
+    <script type="text/javascript">
+		function j_validateCallback(form,call,callback) {
+			var $form = $(form);
+			if(typeof call != 'undefined' && call instanceof Function){    
+				$i = call($form);
+				if(!$i){
+					return false;
+				}
+			}
+			var _submitFn = function(){
+				$.ajax({
+					type: form.method || 'POST',
+					url:$form.attr("action"),
+					data:$form.serializeArray(),
+					dataType:"json",
+					cache: false,
+					success: function(xMLHttpRequest, textStatus, errorThrown){
+						if(typeof callback != 'undefined' && callback instanceof Function){   
+							callback($form,xMLHttpRequest);
+						}  
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						ui.error("未知错误!");
+					}
+				});
+			}
+			_submitFn();
+			return false;
+		}
+		
+		function checkForm(form){
+			return true;
+		}
+		function post_callback(_form,data){
+			if(data.status != undefined){
+				if(data.status == '0'){
+					ui.error(data.info);
+				} else {
+					ui.success(data.info);
+					window.location.href = U('classroom/AdminVideo/index')+"&tabHash=index";
+				}
+			}
+		}
+		//删除视频
+		function deletevideo(key){
+			
+			if(''==key){
+				ui.error("视频不存在！");
+				return ;
+			}
+			$.ajax({
+				type: 'POST',
+				url:"{:U('classroom/AdminVideo/deletevideo')}",
+				data:{videokey:key},
+				dataType:"json",
+				cache: false,
+				success: function(data){
+					if(data.status == '0'){
+						ui.error(data.info);
+					} else {
+						$("#videokey").val("");//设置videokey为空
+						$("#video_upload_d").css("display","block");//显示上传框
+						$("#form_submit").attr('disabled',"true");//设置上传按钮为禁用
+						ui.success(data.info);
+						
+					}
+					
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					ui.error("未知错误!");
+				 
+				}
+			});
+			
+		}
+		
+    	function callback(data){
+    		
+    		$("#"+data.input_id+"").remove();
+    		$("#image_"+data.input_id).append(
+    			'<div id='+data.input_id+'>'
+    			+'<img style="max-width:100px;padding:2px; border:1px solid #ccc" src='+UPLOAD_URL+'/'+data.src+' />'
+    			+'</div>'
+    		).find('input:file').val('');
+    		$("#"+data.input_id+"_ids").val(data.attach_id);
+    	}
+    	function filecallback(data){
+    		$("#old_coursefile_ids").remove();
+    		$("#coursefile_ids").val(data.attach_id);
+    	}
+    	$(document).ready(function(){
+			$('#detail_form input:file').click(function(){
+				$('input:file').val('');
+			});
+    		$('#original_recommend').change(function(){ 
+    			var che = $("#original_recommend").attr("checked");
+			   	if(che == true){
+			   		$("#re_sort").removeAttr("readonly");
+			   	} else {
+			   		$("#re_sort").attr("readonly",'readonly');
+			   	}
+			});
+			$('#best_recommend').change(function(){ 
+    			var che = $("#best_recommend").attr("checked");
+			   	if(che == true){
+			   		$("#be_sort").removeAttr("readonly");
+			   	} else {
+			   		$("#be_sort").attr("readonly",'readonly');
+			   	}
+			});
+			
+			$('#is_tlimit').change(function(){ 
+    			var che = $("#is_tlimit").attr("checked");
+			   	if(che == true){
+			   		$("#form_limit_discount,#form_starttime,#form_endtime").show();
+			   		$("#limit_discount,#starttime,#endtime").removeAttr("readonly");
+			   	} else {
+			   		$("#form_limit_discount,#form_starttime,#form_endtime").hide();
+			   		$("#form_limit_discount,#form_starttime,#endtime").attr("readonly","readonly");
+			   		$("#limit_discount,#starttime,#endtime").val('');
+			   	}
+			});
+    	});
+		
+	</script>
+<include file="__THEME__/admin_footer" />

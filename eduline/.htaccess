@@ -1,0 +1,97 @@
+Options +FollowSymLinks
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+#一级导航
+RewriteRule ^/?$                                                             /index.php?app=classroom&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?course.html$                                              	 /index.php?app=classroom&mod=Video&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?live.html$                                              	 	 /index.php?app=live&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?teacher.html$                                              	 /index.php?app=classroom&mod=Teacher&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?question.html$                                              	 /index.php?app=wenda&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?exam.html$                                              	 	 /index.php?app=exam&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?group.html$                                              	 /index.php?app=group&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?event.html$                                              	 /index.php?app=event&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?news.html$                                              	 	 /index.php?app=classroom&mod=Topic&act=index&%{QUERY_STRING} [L]
+
+#课程详情
+RewriteRule ^/?course/([0-9]+).html$                                         /index.php?app=classroom&mod=Video&act=view&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?course/watch/([0-9]+).html$                                   /index.php?app=classroom&mod=Video&act=watch&id=$1&%{QUERY_STRING} [L]
+
+#直播详情
+RewriteRule ^/?live/([0-9]+).html$                                           /index.php?app=live&mod=Index&act=view&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?live/watch/([0-9]+).html$                                     /index.php?app=live&mod=Index&act=watch&id=$1&%{QUERY_STRING} [L]
+
+#讲师详情
+RewriteRule ^/?teacher/([0-9]+).html$                                        /index.php?app=classroom&mod=Teacher&act=view&id=$1&%{QUERY_STRING} [L]
+
+#问答详情
+RewriteRule ^/?question/([0-9]+).html$                                       /index.php?app=wenda&mod=Index&act=detail&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?question/type/([0-9]+).html$                                  /index.php?app=wenda&mod=Index&act=index&wdtype=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?question/([0-9]+)/([0-9]+)/([0-9]+).html$                     /index.php?app=wenda&mod=Index&act=classifywd&type=$1&tpid=$2&wdtype=$3&%{QUERY_STRING} [L]
+RewriteRule ^/?question/add.html$                                            /index.php?app=wenda&mod=Index&act=addWenda&%{QUERY_STRING} [L]
+
+#考试详情
+RewriteRule ^/?exam/([0-9]+).html$                                        	 /index.php?app=exam&mod=Index&act=exam&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?exam/report/([0-9]+)/([0-9]+).html$                           /index.php?app=exam&mod=UserExam&act=exam_info&exam_id=$1&paper_id=$2&%{QUERY_STRING} [L]
+
+#小组详情
+RewriteRule ^/?group/([0-9]+).html$                                        	 /index.php?app=group&mod=Topic&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?group/add/([0-9]+).html$                                      /index.php?app=group&mod=Index&act=add&fid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?group/edit/([0-9]+).html$                                     /index.php?app=group&mod=Manage&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?group/member/([0-9]+).html$                                   /index.php?app=group&mod=Manage&act=membermanage&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?group/bbs/([0-9]+)/([0-9]+).html$                             /index.php?app=group&mod=Topic&act=topic&gid=$1&tid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?group/bbs/add/([0-9]+).html$                                  /index.php?app=group&mod=Topic&act=add&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?group/bbs/edit/([0-9]+)/([0-9]+).html$                        /index.php?app=group&mod=Topic&act=edit&gid=$1&tid=$2&%{QUERY_STRING} [L]
+
+#活动详情
+RewriteRule ^/?event/cid/([0-9]+).html$                                      /index.php?app=event&mod=Index&act=index&cid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?event/([0-9]+).html$                                        	 /index.php?app=event&mod=Index&act=eventDetail&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?event/add.html$                          					 /index.php?app=event&mod=Index&act=addEvent&%{QUERY_STRING} [L]
+
+#资讯详情
+RewriteRule ^/?news/([0-9]+).html$                                           /index.php?app=classroom&mod=Topic&act=view&id=$1&%{QUERY_STRING} [L]
+
+#管理中心
+RewriteRule ^/?my/video.html$                                                /index.php?app=classroom&mod=Home&act=video&%{QUERY_STRING} [L]
+RewriteRule ^/?my/album.html$                                                /index.php?app=classroom&mod=Home&act=album&%{QUERY_STRING} [L]
+RewriteRule ^/?my/reserve.html$                                              /index.php?app=classroom&mod=Home&act=course&%{QUERY_STRING} [L]
+RewriteRule ^/?my/wenti.html$                                                /index.php?app=classroom&mod=Home&act=wenti&%{QUERY_STRING} [L]
+RewriteRule ^/?my/wenda.html$                                                /index.php?app=classroom&mod=Home&act=wenda&%{QUERY_STRING} [L]
+RewriteRule ^/?my/note.html$                                                 /index.php?app=classroom&mod=Home&act=note&%{QUERY_STRING} [L]
+RewriteRule ^/?my/review.html$                                               /index.php?app=classroom&mod=Home&act=review&%{QUERY_STRING} [L]
+RewriteRule ^/?my/recharge.html$                                             /index.php?app=classroom&mod=User&act=recharge&%{QUERY_STRING} [L]
+RewriteRule ^/?my/account.html$                                              /index.php?app=classroom&mod=User&act=account&%{QUERY_STRING} [L]
+RewriteRule ^/?my/card.html$                                                 /index.php?app=classroom&mod=User&act=card&%{QUERY_STRING} [L]
+RewriteRule ^/?my/set_info.html$                                             /index.php?app=classroom&mod=User&act=setInfo&%{QUERY_STRING} [L]
+RewriteRule ^/?my/myreserve.html$                                            /index.php?app=classroom&mod=Home&act=teacher_course&%{QUERY_STRING} [L]
+RewriteRule ^/?my/upload.html$                                               /index.php?app=classroom&mod=User&act=teacherVideo&%{QUERY_STRING} [L]
+RewriteRule ^/?my/teacher_info.html$                                         /index.php?app=classroom&mod=User&act=teacherDeatil&%{QUERY_STRING} [L]
+
+#消息
+RewriteRule ^/?message/index.html$                                           /index.php?app=public&mod=Message&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?message/comment.html$                                         /index.php?app=public&mod=Message&act=comment&%{QUERY_STRING} [L]
+RewriteRule ^/?message/notify.html$                                          /index.php?app=public&mod=Message&act=notify&%{QUERY_STRING} [L]
+
+#个人首页
+RewriteRule ^/?user/([0-9]+).html$                                           /index.php?app=classroom&mod=UserShow&act=index&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?user/wenda/([0-9]+).html$                                     /index.php?app=classroom&mod=UserShow&act=wenda&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?user/note/([0-9]+).html$                                      /index.php?app=classroom&mod=UserShow&act=note&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?user/fans/([0-9]+).html$                                      /index.php?app=classroom&mod=UserShow&act=fans&uid=$1&%{QUERY_STRING} [L]
+
+#app下载
+RewriteRule ^/?appdownload$                                                  /index.php?app=home&mod=Index&act=appDownload&%{QUERY_STRING} [L]
+
+#微信
+RewriteRule ^/?landed$                                                       /index.php?app=public&mod=Passport&act=landed&%{QUERY_STRING} [L]
+RewriteRule ^/?smessage$                                                     /index.php?app=public&mod=Passport&act=smessage&%{QUERY_STRING} [L]
+RewriteRule ^/?authentication_wx                                             /index.php?app=public&mod=Passport&act=authentication_wx&%{QUERY_STRING} [L]
+RewriteRule ^/?weChatCertified                                               /index.php?app=public&mod=Passport&act=weChatCertified&%{QUERY_STRING} [L]
+
+
+
+#支付回调地址
+RewriteRule ^/?classroom/Pay/(\w+)                                           /index.php?app=classroom&mod=Pay&act=$1&%{QUERY_STRING} [L]
+
+
+
+</IfModule>

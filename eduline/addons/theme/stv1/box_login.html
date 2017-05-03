@@ -1,0 +1,50 @@
+<script>
+/**
+ * 取消注册
+ */
+function remove_login(){
+    $("#transparent_login").css("display","none");
+}
+</script>
+<div id="transparent_login">
+  <div id="loging-worap-regsiter"> <a class="loging-Cancel" href="javascript:;" onclick="remove_login()">×</a>
+      <!--登录-->
+    <div id="loging-worap">
+          <div class="title">登录</div>
+          <div class="loging">
+              <ul>
+                  <li>
+                      <label class="label">帐&nbsp; &nbsp;&nbsp;&nbsp;号:</label>
+                      <input name="log_username" id="log_username" class="regsiter-width" maxlength="30"  type="text" placeholder="用户名/邮箱/手机">
+
+                  </li>
+                  <li>
+                      <label class="label">密&nbsp; &nbsp;&nbsp;&nbsp;码:</label>
+                      <input name="log_pwd" id="log_pwd"  class="regsiter-width" maxlength="30" type="password" placeholder="请输入登录密码">
+                  </li>
+
+              </ul>
+              <div class="loging-xy">
+                  <div class="loging-xy-bottom">
+                      <input name=""  id="logSub" onclick="logSub()"  class="loging-xy-submit" type="submit" value="登录"/>
+                      <a href="{:U('home/Repwd/index')}">忘记密码？</a></div>
+                  <style>
+                      .ico-sina{background:url("__THEME__/image/LOGO_48x48.png");}
+                      .ico-qzone{background:url("__THEME__/image/QQ_Logo_wiki4848.png");}
+                      .ico-renren{background:url("__THEME__/image/Renren_logo_48×48.png");}
+                      .ico-weixin{background:url("__THEME__/image/Weixin_logo_48×48.png");}
+                  </style>
+
+                  <div class="loging-bottom">
+                      <php>if(Addons::requireHooks('login_input_footer') ):</php>
+                      <div class="login-ft" style="">
+                          {:Addons::hook('login_input_footer')}
+                      </div>
+                      <php>endif;</php>
+                  </div>
+              </div>
+          </div>
+    </div>
+  </div>
+  <div id="loging-back"></div>
+</div>

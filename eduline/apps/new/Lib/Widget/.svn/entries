@@ -1,0 +1,46 @@
+10
+
+dir
+549
+svn://127.0.0.1/demo/eduline-demo-new/apps/group/Lib/Widget
+svn://127.0.0.1/demo/eduline-demo-new
+
+
+
+2016-03-06T05:31:20.480972Z
+7
+wangjun
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+77b1fa8d-7289-47d7-9acc-578091b8eaf0
+
+AlbumListWidget
+dir
+
+GroupFeedListWidget
+dir
+
+SendGroupWeiboWidget
+dir
+
+GroupWeibo
+dir
+
+GroupCommentWidget
+dir
+
+UploadAttach
+dir
+

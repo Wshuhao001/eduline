@@ -1,0 +1,31 @@
+<include file="../Public/_header" />
+<include file="_nav" />
+<!--container-->
+<div class="nav-s">
+    <div class="nav_tit">限时免费</div>
+</div>
+<!--container-->
+<div class="container"> 
+    <div class="item_box">
+        <ul class="album-list">
+            <volist name="data" id="vo">
+                <li>
+                    <div class="pic">
+                        <a href="{:U('w3g/Video/view',array('id'=>$vo['id']))}">
+                        <img src="{:cut_img($vo['cover'],266,170)}" class="lazyloading" />
+                        <div class="bg">{:limitNumber($vo['video_title'],12)}</div>
+                        </a>
+                     </div>
+                     <div class="info">
+                         <div class="tit"><a href="{:U('w3g/Video/view',array('id'=>$vo['id']))}">{:limitNumber($vo['video_intro'],54)}</a></div>
+                         <div class="con">
+                             <div class="price"><php>if($vo['mzprice']['price'] > 0){</php>{$vo['mzprice']['price']}学币<php>}else{echo '免费';}</php></div>
+                         </div>
+                     </div>
+                </li>
+            </volist>
+        </ul>
+    </div>
+</div>
+<!--footer-->
+<include file="../Public/_footer" />

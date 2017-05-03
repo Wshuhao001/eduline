@@ -1,0 +1,12 @@
+<foreach name="data" item="l">
+    <li>
+        <div class="position-rt">
+            <div class="position-rt-float">
+                <span class="position-rt-float-a" ><a href="{:U('classroom/User/updateLive','id='.$l['id'])}" class="a1">修改</a></span>
+                <span class="position-rt-float-b" onclick="dellive(this,'{$l.id}')">删除</span>
+            </div>
+            <a href="{:U('live/Index/view',array('id'=>$l['id']))}" class="img"><img src="{:getCover($l['cover'] , 222,144)}"> </a> </div>
+        <h2><a href="{:U('live/Index/view',array('id'=>$l['id']))}">{$l.title}</a></h2>
+        <div class="user-imglistbt"><a href="{$l.url}" target="_blank">开始讲课</a></div>
+    </li>
+</foreach>

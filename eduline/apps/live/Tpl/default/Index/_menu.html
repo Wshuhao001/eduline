@@ -1,0 +1,8 @@
+<dt></dt>
+<volist name="data" id="vo">
+<dd>
+	<div class="fr">{$vo.note}</div>
+    <div class="fl"><span>第{$key+1}节：{$vo.title} &nbsp;&nbsp;&nbsp;&nbsp;<php>echo date('Y-m-d H:i' , $vo['beginTime']) .'-' . date('H:i' , $vo['endTime'])</php></span></div>
+    <i></i>
+</dd>
+</volist>

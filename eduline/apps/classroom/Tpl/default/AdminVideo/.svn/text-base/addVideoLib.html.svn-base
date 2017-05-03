@@ -1,0 +1,110 @@
+<include file="__THEME__/admin_header" />
+<include file="__THEME__/swfupload" />
+	<div id="container" class="so_main">
+    <div class="page_tit">上传文件</div>
+
+    <php>if(!empty($pageTab)):</php>
+	    <div class="tit_tab">
+	        <ul>
+	        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+		        <volist name='pageTab' id='t'>
+		            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+		        </volist>
+	        </ul>
+	    </div>
+    <php>endif;</php>
+
+    <form method="POST" action="{:U('classroom/AdminVideo/addVideoLib')}" id="detail_form" name="detail_form" onsubmit="return checkForm(this);">
+    	<input type="hidden" name="systemdata_list" value="video_Admin" class="s-txt">
+    	<input type="hidden" name="systemdata_key" value="addVideo" class="s-txt">
+    	<input type="hidden" name="pageTitle" value="添加视频" class="s-txt">
+    	<input type="hidden" name="id" value="{$id}" />
+    	<div class="form2">
+    		
+    		<dl class="lineD" ">
+		      	<dt><font color="red"> * </font>文件名称：</dt> 
+		      	<dd>
+		      		<input name="title" type="text" value="{$title}" class="s-txt">
+		    	</dd>
+		    </dl>
+
+    		<dl class="lineD" <php>if($_GET['id']){</php>style="display:none"<php>}</php> >
+		      	<dt>类型：</dt>
+		      	<dd>
+      	        	<label><input type="radio" name="type" value="1" checked="checked">视频 </label>            		
+      	        	<label><input type="radio" name="type" value="2"  >音频 </label>            		              	
+      	        	<label><input type="radio" name="type" value="3"  >文本 </label>            		              	
+      	        	<label><input type="radio" name="type" value="4"  >文档 </label>  
+      	        	<br/>
+      	        	<p>如果是文档文件，请将上传空间配置为“本地”</p>          		              	
+		    	</dd>
+
+		    </dl>
+            
+            <dl <php>if($_GET['id']){</php>style="display:none"<php>}</php> class="lineD" >
+		    	<dt><font color="red"> * </font>上传文件：</dt>
+		    	<dd>
+		    		<div id="video">
+		    	     <php>if($upload_room == 0){</php> 
+		    	         {:W('UploadAttach',array('limit'=>'1','allow_exts'=>'flv,f4v,mp4,mp3,pdf'))}
+		    	     <php>}else{</php> 
+						 <div id="content">
+							<div class="swfupload-box">
+							    <p>点击“浏览”按钮，选择您要上传的文件后，系统将自动上传并在完成后提示您。</p>
+							    <p>一次只能上传一个视频文件！</p>
+							    <p>支持流行视频格式flv，f4v，mp4，mp3，pdf</p>
+								<form id="form1" action="index.php" method="post" enctype="multipart/form-data">
+									<div class="fieldset flash" id="fsUploadProgress"></div>
+									<div style="margin-top:15px;">
+										<div style="width:auto;float:left;"><span id="spanButtonPlaceHolder" ></span></div>
+										<input id="btnCancel" type="button" value="取消上传" onclick="testclick();" disabled="disabled" style="margin-left: 5px; font-size: 8pt; height: 29px;" />
+									</div>
+								</form>
+							</div>
+						</div>
+					<php>}</php>
+					</div>
+
+					<div id="doc" style="display: none;">
+					{:W('Editor',array('width'=>'90%','contentName'=>'content'))}
+					</div>
+		    	</dd>
+		    </dl>
+
+
+		    <input id="videokey" name="videokey" type="hidden" value="{$videokey}">
+		    <input name="video_address" type="hidden" value="{$video_path}">
+		    
+		    <div class="page_btm">
+			<input type="submit" class="btn_b" value="保存" id="form_submit">
+    	</div>
+    	</div>
+    	
+    	
+    </form>
+    <script type="text/javascript">
+    	$(function(){
+			$(":radio").click(function(){
+				var v = $(this).val();
+				if(v == 3) {
+					$('#video').css('display','none');
+					$('#doc').css('display','block');
+				} else {
+					$('#doc').css('display','none');
+					$('#video').css('display','block');
+				}
+			});
+		});
+		
+		function checkForm(form){
+			var _this = $(form);
+			var title = _this.find('input[name="title"]').val();
+			if('' == title){
+				ui.error("文件名称不能为空");
+				return false;
+			}
+		}
+    	
+		
+	</script>
+<include file="__THEME__/admin_footer" />

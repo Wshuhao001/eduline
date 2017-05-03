@@ -1,0 +1,96 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/css/teacher.css" rel="stylesheet" type="text/css" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <link rel="stylesheet" href="__THEME__/js/swfupload/css/default.css">
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/fileprogress.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/handlers.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/swfupload/swfupload.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/swfupload.queue.js"></script>
+	<script src="__THEME__/js/cyjs/jquery-1.7.1.min.js"></script>
+    <style type="text/css">
+    .ico_top, .ico_btm {
+        background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+        height: 14
+        px;
+        width: 12px;
+    }
+    .ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+    }
+    .ico_top { background-position: -12px 0;}
+    .ico_btm {background-position: -24px 0;}
+    .ico_top:hover { background-position: 0 0;}
+    .ico_btm:hover { background-position: -35px 0;}
+        #canvas{
+            border:1px solid #eee;
+        }
+  </style>
+    <div class="user-con fl user-pbottom">
+      <div class="user-con-title">
+        <a onclick="navClick(this,'uploadvideo')" href="#">人脸注册</a>
+      </div>
+        <div class="zhaoxiang" style="overflow: hidden;margin-top: 50px;">
+            <div class="my-video" style="float:left">
+                <video id="video" autoplay="" style='width:300px;height:300px;'></video>
+                <p id="paizhao" style="color:#fff;text-align: center;background: #1981E8;cursor: pointer;margin-top:15px;line-height: 2.3">拍　　　照</p>
+            </div>
+            <div class="my-canvas" style="float:left;margin-left:10px;margin-top:38px">
+                <canvas id="canvas" width="300" height="225"></canvas>
+                <p id="shangchuan" style="color:#fff;text-align: center;background: #1981E8;cursor: pointer;margin-top:51px;line-height: 2.3">注册上传</p>
+            </div>
+        </div>
+
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+<script type="text/javascript">
+	console.log( document.cookie );
+    var video=document.getElementById("video");
+    var context=canvas.getContext("2d");
+    var errocb=function(){
+        console.log("sth srong");
+    };
+    if(confirm('确定要打开摄像头吗吗?'))
+    {
+    if(navigator.getUserMedia){
+        navigator.getUserMedia({"video":true},function(stream){
+            video.src=stream;
+            video.play();
+        },errocb);
+    }else if(navigator.webkitGetUserMedia){
+        navigator.webkitGetUserMedia({"video":true},function(stream){
+            video.src=window.webkitURL.createObjectURL(stream);
+            video.play();
+        },errocb);
+    } }
+    var mydataPic=null;
+    document.getElementById("paizhao").addEventListener("click",function(){
+        context.drawImage(video,0,0,300,225);
+        document.getElementById("paizhao").innerHTML="重新拍照";
+        var imgData=canvas.toDataURL();
+        mydataPic=imgData.substring(22);
+    });
+    //点击上传ajax
+    document.getElementById("shangchuan").addEventListener("click",function(){
+        //console.log( mydataPic);
+       // alert("我被点击了");
+        $.ajax({
+            type: "POST",
+            url: "/index.php?app=Classroom&mod=Youtuface&act=newperson",
+            data: {"img":mydataPic},
+            success: function(data){
+                if(data=="ok"){
+                    alert("注册成功");
+                }else{
+                    alert(data);
+                }
+            }
+        });
+    })
+
+
+</script>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,243 @@
+<include file="__THEME__/public_header" />
+<include file="__THEME__/editor" />
+<script type="text/javascript" src="__APP__/Js/common.js"></script>
+<script type="text/javascript" src="__APP__/Js/topic.js"></script>
+<link  href="__APP__/group.css" rel="stylesheet" type="text/css"/>
+<style>
+    .sk_main{background-color: transparent;}
+    .internalBox{width: 1200px;margin: 0 auto;background-color: #fff;zoom: 1;}
+    .internalBox:after{clear: both;display: block;height: 0;visibility: visible;content: "";}
+    .breadInter{width: 1200px;margin: 0 auto;}
+    .sk_main .sk_r{width: 315px;}
+</style>
+<script>
+var gid = {$gid};
+var tid = {$tid};
+
+var admin_set = function(op)
+{
+	$.ajax({
+		type: "POST",
+		url:  "__URL__&{:C('VAR_ACTION')}="+op,
+		data: 'gid={$gid}&tid={$tid}&op=' + op,
+		dataType:"json",
+		success: function(data)
+		{
+			if (data.flag == 1) {
+				var element_id = '';
+				var operation = '';
+				var operation_title = '';
+				switch (op) {
+					case 'lock':
+						element_id = 'lock';
+						operation = 'unlock';
+						operation_title = '取消锁定';
+						$('#lock_icon').show();
+						break;
+					case 'unlock':
+						element_id = 'lock';
+						operation = 'lock';
+						operation_title = '锁定';
+						$('#lock_icon').hide();
+						break;
+					case 'dist': // 设为精华
+						element_id = 'dist';
+						operation = 'undist';
+						operation_title = '取消精华';
+						$('#dist_icon').show();
+						break;
+					case 'undist': // 取消精华
+						element_id = 'dist';
+						operation = 'dist';
+						operation_title = '设为精华';
+						$('#dist_icon').hide();
+						break;
+					case 'top': // 置顶
+						element_id = 'top';
+						operation = 'untop';
+						operation_title = '取消置顶';
+						$('#top_icon').show();
+						break;
+					case 'untop': // 取消置顶
+						element_id = 'top';
+						operation = 'top';
+						operation_title = '置顶';
+						$('#top_icon').hide();
+						break;
+				}
+				var obj = $('#'+element_id);
+				obj.html(operation_title);
+				obj.attr('title', operation_title);
+				obj.attr('href', 'javascript:admin_set("'+operation+'");');
+				ui.success("操作成功");
+			}else {
+				ui.error("操作失败");
+			}
+		}
+	});
+}
+
+var quote = function(id)
+{
+	ui.box.load(U('group/Topic/quoteDialog') + '&gid=' + gid + '&id=' + id,{title:'引用'});
+}
+
+	function reload() {
+		window.location.reload();
+	}
+	
+	function delThread(gid, tid)
+   {
+
+		if (confirm("删除后无法恢复！确认删除整个话题？"))
+		{
+			document.delform.gid.value = gid;
+			document.delform.tid.value = tid;
+			document.delform.type.value = 'thread';
+			document.delform.submit();
+		}
+	}
+	function delPost(gid,pid)
+	{
+		if (confirm("删除后无法恢复！确认删除该条回复？"))
+		{
+			document.delform.gid.value = gid;
+			document.delform.tid.value = pid;
+			document.delform.type.value = 'post';
+			document.delform.submit();
+		}
+	}
+
+</script>
+<div class="breadcrumb">
+    <div class="breadInter">
+        <a href="{:U('group')}" style="padding-left:0;">小组</a>&gt;<a href="{:U('group/Topic/index',array('gid'=>$gid))}">{$groupinfo.name}</a>&gt;
+        <a>《{$topic.ctitle}{$topic.title}》</a>
+    </div>
+
+</div>
+ 
+ 
+ <div class="sk_main">
+     <div class="internalBox">
+         <div class="sk_l">
+             <div class="sk_avator"><space uid="topic['uid']" class="fn" target="_blank">{uavatar}</space><p> <space uid="topic['uid']" class="fn nogroup" target="_blank">{uname}</space></p></div>
+             <h1>{$topic.ctitle}{$topic.title}</h1>
+             <div class="sk_dig">{$topic['addtime']|friendlyDate} 来自小组</div>
+             <div class="sk_cont">
+                 {$topic.content|html_entity_decode=###, ENT_QUOTES, 'UTF-8'}
+             </div>
+             <php> if($topic['mtime']) { </php>
+             <php>} </php>
+             <div class="lh35 alR toplineD">
+                 <php>if($isadmin) { </php>
+                 <php>if($topic['dist'] == 1) {</php>
+                 <a id="dist" href="javascript:admin_set('undist');" title="取消精华">取消精华</a> 
+                 <php>} else {</php>
+                 <a id="dist" href="javascript:admin_set('dist');" title="设为精华">设为精华</a>
+                 <php>}</php>
+                 <span class="line_l">|</span>
+                 <php>if($topic['top'] == 1) {</php>
+                 <a id="top" href="javascript:admin_set('untop');" title="取消置顶">取消置顶</a> 
+                 <php>} else {</php>
+                 <a id="top" href="javascript:admin_set('top');" title="置顶">置顶</a>
+                 <php>}</php>
+                 <span class="line_l">|</span>
+                 <php>if($topic['lock'] == 1) {</php>
+                 <a id="lock" href="javascript:admin_set('unlock');" title="取消锁定">取消锁定</a> 
+                 <php>} else {</php>
+                 <a id="lock" href="javascript:admin_set('lock');" title="锁定">锁定</a>
+                 <php>}</php>
+                 <span class="line_l">|</span>
+                 <a href="{:U('/Topic/edit',array('gid'=>$gid,'tid'=>$tid))}" title="编辑">编辑</a>
+                 <span class="line_l">|</span>  <a href="javascript:delThread({$gid},{$tid});" title="删除">删除</a> <span class="line_l">|</span>
+                 <php>} else if ($mid == $topic['uid']) { </php>
+                 <a href="{:U('/Topic/edit',array('gid'=>$gid,'tid'=>$tid))}" title="编辑">编辑</a> <span class="line_l">|</span>
+                 <a href="javascript:delThread({$gid},{$tid});" title="删除">删除</a> <span class="line_l">|</span>
+                 <php>}</php>
+                 <!--
+                 <php>if ($ismember) { </php>
+                 <a href="#replyForm" onclick="postquotes({$topic['pid']})">引用</a>
+                 <php>}</php>
+                 -->
+             </div>
+             <div class="reply feed_list">
+                 {:W('Comment',array('tpl'=>'detail', 'table'=>'group_topic', 'row_id'=>$topic[id], 'canrepost'=>'0', 'cancomment'=>1, 'cancomment_old'=>0, 'showlist'=>1, 'limit'=>'20', 'order'=>'DESC'))}
+             </div>
+         </div>
+         <div class="sk_r">
+             <h1>作者的其他帖子</h1>
+             <ul>
+                 <volist name="otherThread" id="v">
+                     <li><a href="{:U('/Topic/topic',array('gid'=>$gid,'tid'=>$v['id']))}" target="_blank">{$v.ctitle}{$v.title}</a></li>
+                 </volist>
+             </ul>
+             <h1>最新帖子</h1>
+             <ul>
+                 <volist name="hotThread" id="v">
+                     <li><a href="{:U('/Topic/topic',array('gid'=>$gid,'tid'=>$v['id']))}" target="_blank">{$v.ctitle}{$v.title}</a></li>
+                 </volist>
+             </ul>
+         </div>
+     </div>
+ </div>
+
+<script>
+function postquotes(id){
+	if ( !id ){
+		$('#postquotes').html('');
+		return;
+	}
+	var quoteshtml = $('#quotes_'+id).html();
+	$('#postquotes').html(quoteshtml);
+}
+function download(fid) {
+	if (!fid) {
+		ui.error('附件参数错误');
+		return false;
+	}
+	document.downloadform.fid.value = fid; 
+	document.downloadform.submit();
+}
+function photo_size(name){
+	$(name+" img").each(function(){
+		var width = 500;
+		var height = 500;
+		var image = $(this);
+		if (image.width() > image.height()){
+		   if(image.width()>width){
+			image.width(width);
+			image.height(width/image.width()*image.height());
+		   }
+		}
+		else{
+		   if(image.height()>height){
+			image.height(height);
+			image.width(height/image.height()*image.width());
+		   }
+		}
+		  image.addClass('hand');
+		  image.bind('click',function(){
+                   window.open(image.attr('src'),'_blank');
+                });
+	});
+}
+
+photo_size('#topic_content');
+photo_size('#reply_content');
+photo_size('#quotes');
+
+<php>if($topic['lock'] == 0){</php>
+function replySubmit() {
+	var content = E.getData();
+    content = removeHTMLTag(content);
+	if(checkPostContent(content) < 10) {
+		ui.error('回复内容不能小于10个字');
+		return false;
+	}
+	return true;
+}
+
+<php>}</php>
+</script> 
+<include file="__THEME__/public_footer" />

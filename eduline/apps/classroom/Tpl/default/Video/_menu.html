@@ -1,0 +1,18 @@
+
+<dt></dt>
+<volist name="data" id="vo">
+<dd>
+	<div class="fr"></div>
+    <div class="fl"><span>{$vo.title}</span></div>
+    <i></i>
+</dd>
+<php>if($vo['child']){</php>
+	<volist name="vo.child" id="vo1">
+	<dd style="padding-left:25px;">
+		<div class="fr"><a href="{:U('classroom/Video/watch','id='.$vo1['vid'].'&s_id='.$vo1['zy_video_section_id'])}"></a></div>
+	    <div class="fl"><span>{$vo1.title}</span></div>
+	    <i></i>
+	</dd>
+	</volist>
+<php>}</php>
+</volist>

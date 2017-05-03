@@ -1,0 +1,69 @@
+<include file="../Public/_header" />
+<include file="_nav" />
+<script type="text/javascript" src="__APP__/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="__APP__/js/004.001.js"></script>
+<link rel="stylesheet" type="text/css" href="__APP__/css/common.all.css">
+<link rel="stylesheet" type="text/css" href="__APP__/css/style-new.css">
+    <div class="msg-list">
+        <volist name="list" id="vo">
+            <volist name="vo.child" id="v">
+                <!--音频-->
+                <php>if($v['type'] == 2){</php>
+                <div class="msg-item">
+                    <div class="img" style="background-image:url(//www.xuanyes.com/web/images/defaultavatar.png)"></div> 
+                    <div class="msg-body"> 
+                        <a href="javascript:;" onclick="playOrPaused('audio{$key}')" class="msg-label msg-label-voice audio{$key}" style="width:50%"> 
+                            <span class="msg-bar-played"></span>
+                            <span class="msg-voice"></span> 
+                            <span class="msg-left-top"></span> 
+                            <span class="msg-top"></span> 
+                            <span class="msg-top-right"></span> 
+                            <span class="msg-right"></span> 
+                            <span class="msg-right-bottom"></span> 
+                            <span class="msg-bottom"></span> 
+                            <span class="msg-bottom-left"></span> 
+                            <span class="msg-left"></span> 
+                            <span class="msg-pause">暂停</span> 
+                            <audio src="{$v.address}" id="audio{$key}"></audio>
+                        </a> 
+                        <!--<span class="msg-voice-time">3"</span>-->
+                    </div> 
+                </div>
+                <!--文本-->
+                <php>}elseif($v['type'] == 3){</php>
+                <div class="msg-item">
+                    <div class="img" style="background-image:url(//www.xuanyes.com/web/images/defaultavatar.png)"></div> 
+                    <div class="msg-body" style="word-break: break-all;background: #FFF;padding:5px;"> 
+                        {$v.address}
+                    </div> 
+                </div>
+                <!--文档-->
+                <php>}elseif($v['type'] == 4){</php>
+                <div class="msg-item">
+                    <div class="img" style="background-image:url(//www.xuanyes.com/web/images/defaultavatar.png)"></div> 
+                    <div class="msg-body"> 
+                        <a href="{$v.address}" class="msg-label msg-label-voice msg-down" style="width:50%"></a> 
+                    </div> 
+                </div>
+                <php>}</php>
+            </volist>
+        </volist>
+    </div>
+<script type="text/javascript">
+
+function playOrPaused(id){
+    var audio = document.getElementById(id);
+    if(audio.paused){
+        audio.play();
+        $('.'+id).find('.msg-voice').css('width','18px');
+        $('.'+id).find('.msg-pause').css('display','none');
+        return;
+    }
+    audio.pause();
+    $('.'+id).find('.msg-voice').css('width',0);
+    $('.'+id).find('.msg-pause').css('display','block');
+}
+     
+</script>
+<!--footer-->
+<include file="../Public/_footer" />

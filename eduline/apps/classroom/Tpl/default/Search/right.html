@@ -1,0 +1,12 @@
+<!--右边-->
+<ul class="search-ul">
+    <php>if(empty($_GET['searchtid'])){</php>
+    <li><a href="{:U('classroom/Search/index',array('searchkey'=>$searchkey))}" <php>if(ACTION_NAME=="index"){echo "class='active'";}</php>  >课程<span class="font12">({$video_count})</span></a></li>
+    <php>}</php>
+
+    <volist name="wenda_cate" id="vo">
+    	<li><a href="{:U('classroom/Search/wenda',array('searchkey'=>$searchkey,'searchtid'=>$searchtid,'type'=>$vo['zy_wenda_category_id']))}" <php>if(ACTION_NAME=="wenda" && $_GET['type']== $vo['zy_wenda_category_id']){echo "class='active'";}</php> >{$vo.title}<span class="font12">({$vo.count})</span></a></li>
+
+    </volist>
+
+</ul>
